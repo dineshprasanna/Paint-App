@@ -41,4 +41,28 @@
     [super dealloc];
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [self init];
+    if (self)
+    {
+        self.lineWidth = [aDecoder decodeFloatForKey:@"lineWidth"];
+        self.lineColor = [aDecoder decodeObjectForKey:@"lineColor"];
+        self.opacity = [aDecoder decodeFloatForKey:@"opacity"];
+        UIBezierPath *bezierPath = [aDecoder decodeObjectForKey:@"bezierPath"];
+        self.linePath = CGPathCreateMutableCopy(bezierPath.CGPath);
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeFloat:self.lineWidth forKey:@"lineWidth"];
+    [aCoder encodeObject:self.lineColor forKey:@"lineColor"];
+    [aCoder encodeFloat:self.opacity forKey:@"opacity"];
+    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithCGPath:self.linePath];
+    [aCoder encodeObject:bezierPath forKey:@"bezierPath"];
+}
+
 @end
